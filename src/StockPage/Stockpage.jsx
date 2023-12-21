@@ -2,7 +2,10 @@ import React from 'react'
 import Container from '@mui/material/Container'
 import Box from '@mui/material/Box'
 import './stock.css'
-import MenuOpenIcon from '@mui/icons-material/MenuOpen';
+import Sidebar from '../Sidebar/Sidebar'
+import Mylist from '../components/Mylist'
+import { Divider } from '@mui/material'
+import Liststock from '../components/Liststock'
 
 const Stockpage = () => {
   return (
@@ -24,8 +27,7 @@ const Stockpage = () => {
               borderRadius: '10px',
             }}
           >
-
-            
+            <Sidebar />
           </Box>
           <Box
             className='border-right'
@@ -34,7 +36,13 @@ const Stockpage = () => {
               width: '95%',
               backgroundColor: '#222429',
             }}
-          ></Box>
+          >
+            <Container sx={{ marginTop: '2rem' }}>
+              <Mylist />
+              <Divider style={{ background: '#E6E6E7', margin: '10px 0' }} />
+              <Liststock />
+            </Container>
+          </Box>
         </Box>
       </Container>
     </Box>
