@@ -6,6 +6,7 @@ import Sidebar from '../Sidebar/Sidebar'
 import Mylist from '../components/Mylist'
 import { Divider } from '@mui/material'
 import Liststock from '../components/Liststock'
+import StockList from '../stockList/List'
 
 const Stockpage = () => {
   return (
@@ -38,9 +39,10 @@ const Stockpage = () => {
             }}
           >
             <Container sx={{ marginTop: '2rem' }}>
-              <Mylist />
-              <Divider style={{ background: '#E6E6E7', margin: '10px 0' }} />
               <Liststock />
+              <Divider style={{ background: '#5E5F63', margin: '10px 0' }} />
+              <Mylist />
+              <StockList />
             </Container>
           </Box>
         </Box>

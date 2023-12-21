@@ -6,7 +6,13 @@ import AddIcon from '@mui/icons-material/Add'
 
 const Mylist = () => {
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        marginTop: '1.2rem',
+      }}
+    >
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <Typography variant='h5' gutterBottom color={'white'}>
           My WatchList
