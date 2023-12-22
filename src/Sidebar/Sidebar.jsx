@@ -8,6 +8,8 @@ import DarkModeIcon from '@mui/icons-material/DarkMode'
 import Brightness5Icon from '@mui/icons-material/Brightness5'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 
+
+
 const Sidebar = () => {
   return (
     <Box
@@ -25,6 +27,7 @@ const Sidebar = () => {
       <DarkModeIcon className='flex-item' fontSize='large' />
       <Brightness5Icon className='flex-item' fontSize='large' />
       <AccountCircleIcon className='flex-item' fontSize='large' />
+      
     </Box>
   )
 }
