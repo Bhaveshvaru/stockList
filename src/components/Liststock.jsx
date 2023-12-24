@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { Button, styled } from '@mui/material'
@@ -8,6 +8,12 @@ import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 
 const Liststock = () => {
+  const [watchState, setWatchState] = useState([
+    { name: 'WinnerList', id: 2 },
+    { name: 'Tech List', id: 3 },
+  ])
+
+  const [watchlistName, setWatchlistName] = useState('')
   const [open, setOpen] = React.useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
@@ -23,67 +29,70 @@ const Liststock = () => {
     borderRadius: '10px',
   }
 
-  const WhiteBorderTextField = styled(TextField)`
-    & label.Mui-focused {
-      border-color: white;
-    }
-
-    & .MuiOutlinedInput-root {
-      &.Mui-focused fieldset {
-        border-color: white;
+  const handleListUpdate = () => {
+    if (watchlistName === '') {
+      window.alert('Please add Name in the field!!!')
+    } else {
+      const newItem = {
+        id: Math.floor(Math.random() * 1000) + 1,
+        name: watchlistName,
       }
+      setWatchState((prevState) => [...prevState, newItem])
+      setWatchlistName('')
+      handleClose()
     }
-  `
+  }
+
+  const inputRef = useRef()
+  const handleInputChange = (event) => {
+    event.preventDefault()
+    const { value } = event.target
+    setWatchlistName(value)
+  }
 
   return (
     <Box>
       <Typography variant='h5' gutterBottom color={'white'}>
         WatchLists
       </Typography>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'flex-start',
-          marginTop: '1.5rem',
-        }}
-      >
-        <Button
+      <Box>
+        <Box
           sx={{
-            textTransform: 'lowercase',
-            backgroundColor: '#393A3E',
-            borderRadius: '50px',
-            height: '2.5rem',
-            borderColor: '#222429',
-            color: '#E6E6E7',
-            '&:hover': {
-              backgroundColor: '#14141A',
-              borderColor: '#222429',
-            },
+            display: 'flex',
+            justifyContent: 'flex-start',
+            marginTop: '1.5rem',
           }}
-          variant='outlined'
         >
-          My techlist #1
-        </Button>
+          {watchState &&
+            watchState.map((item) => {
+              return (
+                <Button
+                  key={item.id}
+                  sx={{
+                    marginLeft: '0.6rem',
+                    textTransform: 'lowercase',
+                    backgroundColor: '#393A3E',
+                    borderRadius: '50px',
+                    height: '2.5rem',
+                    borderColor: '#222429',
+                    color: '#E6E6E7',
+                    '&:hover': {
+                      backgroundColor: '#14141A',
+                      borderColor: '#222429',
+                    },
+                  }}
+                  variant='outlined'
+                >
+                  {item.name}
+                </Button>
+              )
+            })}
+        </Box>
+
         <Button
           sx={{
-            textTransform: 'lowercase',
-            backgroundColor: '#393A3E',
-            borderRadius: '50px',
-            height: '2.5rem',
-            borderColor: '#222429',
-            color: '#E6E6E7',
-            marginLeft: '10px',
-            '&:hover': {
-              backgroundColor: '#14141A',
-              borderColor: '#222429',
-            },
-          }}
-          variant='outlined'
-        >
-          winnerlist
-        </Button>
-        <Button
-          sx={{
+            marginTop: 3,
+            marginRight: 5,
             textTransform: 'lowercase',
             backgroundColor: '#393A3E',
             borderRadius: '50px',
@@ -103,6 +112,7 @@ const Liststock = () => {
           Create new watchlist
         </Button>
       </Box>
+
       <Modal
         open={open}
         onClose={handleClose}
@@ -142,15 +152,18 @@ const Liststock = () => {
               }}
               variant='outlined'
               startIcon={<AddIcon />}
-              onClick={handleOpen}
+              onClick={handleListUpdate}
             >
-              Create new watchlist
+              Create a new watchlist
             </Button>
           </Box>
 
           <Stack spacing={2} sx={{ width: 400, mt: 5 }}>
-            <WhiteBorderTextField
-              autoComplete='false'
+            <TextField
+              autoComplete='off'
+              onChange={handleInputChange}
+              value={watchlistName}
+              inputRef={inputRef}
               sx={{
                 borderColor: 'white',
                 '&:hover fieldset': {

@@ -1,13 +1,103 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import { Button, styled } from '@mui/material'
+import { Autocomplete, Button, styled } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import Modal from '@mui/material/Modal'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
+import axios from 'axios'
 
 const Mylist = () => {
+  const [symbolData, setSymbolData] = useState([])
+  const changeHandler = (e) => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `https://api.twelvedata.com/stocks?apikey=${process.env.REACT_APP_SOCKET}`,
+          {
+            params: {
+              symbol: e.target.value,
+              exchange: 'NASDAQ',
+            },
+          }
+        )
+        console.log(response.data)
+        const updatedData = response.data.data.map((item) => {
+          const updatedItem = {}
+          updatedItem.label = item.symbol
+          updatedItem.year = item.name
+          // Add other properties as needed
+          return updatedItem
+        })
+        setSymbolData(updatedData)
+      } catch (error) {
+        // Handle error
+        console.error('Error fetching data:', error)
+      }
+    }
+    fetchData()
+  }
+  //   useEffect(() => {
+  //     // Define the WebSocket endpoint
+  //     const socketEndpoint =
+  //       `wss://ws.twelvedata.com/v1/quotes/price?apikey=${process.env.REACT_APP_SOCKET}`
+
+  //     // Create a new WebSocket instance
+  //     const socket = new WebSocket(socketEndpoint)
+
+  //     // Define the message to be sent
+  //     const subscribeMessage = JSON.stringify({
+  //       action: 'subscribe',
+  //       params: {
+  //         symbols: 'AAPL,RY,BTC/USD',
+  //       },
+  //     })
+
+  //     // Handle the WebSocket connection opening
+  //     socket.onopen = () => {
+  //       console.log('WebSocket connection opened')
+
+  //       // Send the subscribe message when the connection is open
+  //       socket.send(subscribeMessage)
+  //     }
+
+  //     // Handle messages received from the WebSocket server
+  //     socket.onmessage = (event) => {
+  //       const receivedData = JSON.parse(event.data)
+  //       console.log('Received data:', receivedData)
+  //       // Process the received data as needed
+  //     }
+
+  //     // Handle errors that occur.
+  //     socket.onerror = (error) => {
+  //       console.error('WebSocket Error:', error)
+  //     }
+
+  //     // Handle the WebSocket connection closing
+  //     socket.onclose = (event) => {
+  //       console.log('WebSocket connection closed:', event)
+
+  //       // You may want to attempt to reconnect here if needed
+  //     }
+
+  //     // Clean up the WebSocket connection when the component is unmounted
+  //     return () => {
+  //       console.log('Cleaning up WebSocket connection')
+  //       socket.close()
+  //     }
+  //   }, [])
+
+  const top100Films = [
+    { label: 'The Shawshank Redemption', year: 1994 },
+    { label: 'The Godfather', year: 1972 },
+    { label: 'The Godfather: Part II', year: 1974 },
+    { label: 'The Dark Knight', year: 2008 },
+    { label: '12 Angry Men', year: 1957 },
+    { label: "Schindler's List", year: 1993 },
+    { label: 'Pulp Fiction', year: 1994 },
+  ]
+
   const [open, setOpen] = React.useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
@@ -119,7 +209,31 @@ const Mylist = () => {
           </Box>
 
           <Stack spacing={2} sx={{ width: 400, mt: 5 }}>
-            <WhiteBorderTextField
+            <Autocomplete
+              disablePortal
+              InputLabelProps={{
+                style: {
+                  color: 'white',
+                },
+              }}
+              id='combo-box-demo'
+              options={top100Films}
+              sx={{ width: 300 }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label='Stocks'
+                  onChange={changeHandler}
+                  InputLabelProps={{
+                    style: {
+                      color: 'white',
+                    },
+                  }}
+                />
+              )}
+            />
+            {/* <WhiteBorderTextField
+              onChange={changeHandler}
               sx={{
                 borderColor: 'white',
                 '&:hover fieldset': {
@@ -133,7 +247,7 @@ const Mylist = () => {
                   color: 'white',
                 },
               }}
-            />
+            /> */}
           </Stack>
         </Box>
       </Modal>
