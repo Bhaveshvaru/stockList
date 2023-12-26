@@ -9,3 +9,13 @@ fieldset {
 .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
   color: white !important;
 }
+
+.css-1wuilmg-MuiAutocomplete-root
+  .MuiOutlinedInput-root
+  .MuiAutocomplete-input {
+  color: white !important;
+}
+
+.css-i4bv87-MuiSvgIcon-root {
+  color: white !important;
+}

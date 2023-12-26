@@ -10,6 +10,8 @@ import axios from 'axios'
 
 const Mylist = () => {
   const [symbolData, setSymbolData] = useState([])
+  const [symbol, setSymbol] = useState('')
+
   const changeHandler = (e) => {
     const fetchData = async () => {
       try {
@@ -27,10 +29,10 @@ const Mylist = () => {
           const updatedItem = {}
           updatedItem.label = item.symbol
           updatedItem.year = item.name
-          // Add other properties as needed
           return updatedItem
         })
         setSymbolData(updatedData)
+        console.log('updatedData', updatedData)
       } catch (error) {
         // Handle error
         console.error('Error fetching data:', error)
@@ -38,6 +40,8 @@ const Mylist = () => {
     }
     fetchData()
   }
+
+  const symbolAddHandler = () => {}
   //   useEffect(() => {
   //     // Define the WebSocket endpoint
   //     const socketEndpoint =
@@ -88,16 +92,6 @@ const Mylist = () => {
   //     }
   //   }, [])
 
-  const top100Films = [
-    { label: 'The Shawshank Redemption', year: 1994 },
-    { label: 'The Godfather', year: 1972 },
-    { label: 'The Godfather: Part II', year: 1974 },
-    { label: 'The Dark Knight', year: 2008 },
-    { label: '12 Angry Men', year: 1957 },
-    { label: "Schindler's List", year: 1993 },
-    { label: 'Pulp Fiction', year: 1994 },
-  ]
-
   const [open, setOpen] = React.useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
@@ -112,18 +106,6 @@ const Mylist = () => {
     p: 4,
     borderRadius: '10px',
   }
-
-  const WhiteBorderTextField = styled(TextField)`
-    & label.Mui-focused {
-      border-color: white;
-    }
-
-    & .MuiOutlinedInput-root {
-      &.Mui-focused fieldset {
-        border-color: white;
-      }
-    }
-  `
 
   return (
     <Box
@@ -202,7 +184,7 @@ const Mylist = () => {
               }}
               variant='outlined'
               startIcon={<AddIcon />}
-              onClick={handleOpen}
+              onClick={symbolAddHandler}
             >
               Add New Symbols
             </Button>
@@ -217,7 +199,7 @@ const Mylist = () => {
                 },
               }}
               id='combo-box-demo'
-              options={top100Films}
+              options={symbolData}
               sx={{ width: 300 }}
               renderInput={(params) => (
                 <TextField

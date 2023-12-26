@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import { Button, styled } from '@mui/material'
+import { Button } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import Modal from '@mui/material/Modal'
 import Stack from '@mui/material/Stack'
@@ -9,8 +9,8 @@ import TextField from '@mui/material/TextField'
 
 const Liststock = () => {
   const [watchState, setWatchState] = useState([
-    { name: 'WinnerList', id: 2 },
-    { name: 'Tech List', id: 3 },
+    { name: 'WinnerList', id: 2, selected: false },
+    { name: 'Tech List', id: 3, selected: true },
   ])
 
   const [watchlistName, setWatchlistName] = useState('')
@@ -36,11 +36,21 @@ const Liststock = () => {
       const newItem = {
         id: Math.floor(Math.random() * 1000) + 1,
         name: watchlistName,
+        selected: false,
       }
       setWatchState((prevState) => [...prevState, newItem])
       setWatchlistName('')
       handleClose()
     }
+  }
+
+  const handleClick = (list) => {
+    let arr = watchState
+    arr.map((item) => {
+      list.id === item.id ? (item.selected = true) : (item.selected = false)
+      return arr
+    })
+    setWatchState(() => [...arr])
   }
 
   const inputRef = useRef()
@@ -74,7 +84,7 @@ const Liststock = () => {
                     backgroundColor: '#393A3E',
                     borderRadius: '50px',
                     height: '2.5rem',
-                    borderColor: '#222429',
+                    borderColor: item.selected ? '#E6E6E7' : '#222429',
                     color: '#E6E6E7',
                     '&:hover': {
                       backgroundColor: '#14141A',
@@ -82,6 +92,7 @@ const Liststock = () => {
                     },
                   }}
                   variant='outlined'
+                  onClick={() => handleClick(item)}
                 >
                   {item.name}
                 </Button>
