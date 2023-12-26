@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import { Autocomplete, Button, styled } from '@mui/material'
+import { Autocomplete, Button } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import Modal from '@mui/material/Modal'
 import Stack from '@mui/material/Stack'
@@ -16,11 +16,10 @@ const Mylist = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://api.twelvedata.com/stocks?apikey=${process.env.REACT_APP_SOCKET}`,
+          `https://api.twelvedata.com/stocks?apikey=d89fd760bbff49ff9f01c797a6c54b05`,
           {
             params: {
               symbol: e.target.value,
-              exchange: 'NASDAQ',
             },
           }
         )
@@ -32,7 +31,6 @@ const Mylist = () => {
           return updatedItem
         })
         setSymbolData(updatedData)
-        console.log('updatedData', updatedData)
       } catch (error) {
         // Handle error
         console.error('Error fetching data:', error)
@@ -41,56 +39,60 @@ const Mylist = () => {
     fetchData()
   }
 
-  const symbolAddHandler = () => {}
-  //   useEffect(() => {
-  //     // Define the WebSocket endpoint
-  //     const socketEndpoint =
-  //       `wss://ws.twelvedata.com/v1/quotes/price?apikey=${process.env.REACT_APP_SOCKET}`
+  const symbolAddHandler = () => {
+    setSymbol((prevText) => prevText + `,${symbolData[0].label}`)
 
-  //     // Create a new WebSocket instance
-  //     const socket = new WebSocket(socketEndpoint)
+    handleClose()
+  }
+  useEffect(() => {
+    // Define the WebSocket endpoint
+    const socketEndpoint = `wss://ws.twelvedata.com/v1/quotes/price?apikey=d89fd760bbff49ff9f01c797a6c54b05`
 
-  //     // Define the message to be sent
-  //     const subscribeMessage = JSON.stringify({
-  //       action: 'subscribe',
-  //       params: {
-  //         symbols: 'AAPL,RY,BTC/USD',
-  //       },
-  //     })
+    // Create a new WebSocket instance
+    const socket = new WebSocket(socketEndpoint)
 
-  //     // Handle the WebSocket connection opening
-  //     socket.onopen = () => {
-  //       console.log('WebSocket connection opened')
+    // Define the message to be sent
+    const subscribeMessage = JSON.stringify({
+      action: 'subscribe',
+      params: {
+        symbols: symbol.substring(1),
+      },
+    })
+    console.log('subscribeMessage', subscribeMessage)
 
-  //       // Send the subscribe message when the connection is open
-  //       socket.send(subscribeMessage)
-  //     }
+    // Handle the WebSocket connection opening
+    socket.onopen = () => {
+      console.log('WebSocket connection opened')
 
-  //     // Handle messages received from the WebSocket server
-  //     socket.onmessage = (event) => {
-  //       const receivedData = JSON.parse(event.data)
-  //       console.log('Received data:', receivedData)
-  //       // Process the received data as needed
-  //     }
+      // Send the subscribe message when the connection is open
+      socket.send(subscribeMessage)
+    }
 
-  //     // Handle errors that occur.
-  //     socket.onerror = (error) => {
-  //       console.error('WebSocket Error:', error)
-  //     }
+    // Handle messages received from the WebSocket server
+    socket.onmessage = (event) => {
+      const receivedData = JSON.parse(event.data)
+      console.log('Received data:', receivedData)
+      // Process the received data as needed
+    }
 
-  //     // Handle the WebSocket connection closing
-  //     socket.onclose = (event) => {
-  //       console.log('WebSocket connection closed:', event)
+    // Handle errors that occur.
+    socket.onerror = (error) => {
+      console.error('WebSocket Error:', error)
+    }
 
-  //       // You may want to attempt to reconnect here if needed
-  //     }
+    // Handle the WebSocket connection closing
+    socket.onclose = (event) => {
+      console.log('WebSocket connection closed:', event)
 
-  //     // Clean up the WebSocket connection when the component is unmounted
-  //     return () => {
-  //       console.log('Cleaning up WebSocket connection')
-  //       socket.close()
-  //     }
-  //   }, [])
+      // You may want to attempt to reconnect here if needed
+    }
+
+    // Clean up the WebSocket connection when the component is unmounted
+    return () => {
+      console.log('Cleaning up WebSocket connection')
+      socket.close()
+    }
+  }, [symbol])
 
   const [open, setOpen] = React.useState(false)
   const handleOpen = () => setOpen(true)
