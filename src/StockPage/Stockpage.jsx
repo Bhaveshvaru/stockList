@@ -6,9 +6,15 @@ import Sidebar from '../Sidebar/Sidebar'
 import Mylist from '../components/Mylist'
 import { Divider } from '@mui/material'
 import Liststock from '../components/Liststock'
-import StockList from '../stockList/List'
 
 const Stockpage = () => {
+  const [open, setOpen] = React.useState(false)
+  const handleOpen = () => setOpen(true)
+  const handleClose = () => setOpen(false)
+
+  const [openSymbol, setOpenSymbol] = React.useState(false)
+  const handleOpenSymbol = () => setOpenSymbol(true)
+  const handleCloseSymbol = () => setOpenSymbol(false)
   return (
     <Box>
       <Container
@@ -28,7 +34,10 @@ const Stockpage = () => {
               borderRadius: '10px',
             }}
           >
-            <Sidebar />
+            <Sidebar
+              handleOpen={handleOpen}
+              handleOpenSymbol={handleOpenSymbol}
+            />
           </Box>
           <Box
             className='border-right'
@@ -39,10 +48,19 @@ const Stockpage = () => {
             }}
           >
             <Container sx={{ marginTop: '2rem' }}>
-              <Liststock />
+              <Liststock
+                open={open}
+                setOpen={setOpen}
+                handleOpen={handleOpen}
+                handleClose={handleClose}
+              />
               <Divider style={{ background: '#5E5F63', margin: '10px 0' }} />
-              <Mylist />
-              <StockList />
+              <Mylist
+                openSymbol={openSymbol}
+                setOpenSymbol={setOpenSymbol}
+                handleOpenSymbol={handleOpenSymbol}
+                handleCloseSymbol={handleCloseSymbol}
+              />
             </Container>
           </Box>
         </Box>

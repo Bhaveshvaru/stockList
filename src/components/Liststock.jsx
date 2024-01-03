@@ -7,22 +7,21 @@ import Modal from '@mui/material/Modal'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 
-const Liststock = () => {
+const Liststock = ({ open, setOpen, handleOpen, handleClose }) => {
   const [watchState, setWatchState] = useState([
     { name: 'WinnerList', id: 2, selected: false },
     { name: 'Tech List', id: 3, selected: true },
+    { name: 'Penny stocks', id: 4, selected: false },
   ])
 
   const [watchlistName, setWatchlistName] = useState('')
-  const [open, setOpen] = React.useState(false)
-  const handleOpen = () => setOpen(true)
-  const handleClose = () => setOpen(false)
+
   const style = {
     position: 'absolute',
     top: '40%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: 600,
     bgcolor: '#222429',
     boxShadow: 24,
     p: 4,
@@ -146,16 +145,47 @@ const Liststock = () => {
             >
               Create WatchList
             </Typography>
-
+          </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-around',
+            }}
+          >
+            <Stack spacing={2} sx={{ width: 400, mt: 5 }}>
+              <TextField
+                autoComplete='off'
+                type='text'
+                onChange={handleInputChange}
+                value={watchlistName}
+                inputRef={inputRef}
+                sx={{
+                  borderColor: 'white',
+                  '&:hover fieldset': {
+                    borderColor: 'green', // Change the border color on hover as needed
+                  },
+                }}
+                variant='outlined'
+                label='Add WatchList Name'
+                InputLabelProps={{
+                  style: {
+                    color: 'white',
+                  },
+                }}
+              />
+            </Stack>
             <Button
               sx={{
                 textTransform: 'lowercase',
                 backgroundColor: '#393A3E',
                 borderRadius: '50px',
-                height: '2.5rem',
+                height: '3.5rem',
                 borderColor: '#222429',
                 color: '#E6E6E7',
                 marginLeft: '10px',
+                marginTop: '30px',
+                fontSize: '0.8rem',
                 '&:hover': {
                   backgroundColor: '#14141A',
                   borderColor: '#222429',
@@ -165,31 +195,9 @@ const Liststock = () => {
               startIcon={<AddIcon />}
               onClick={handleListUpdate}
             >
-              Create a new watchlist
+              Create new watchlist
             </Button>
           </Box>
-
-          <Stack spacing={2} sx={{ width: 400, mt: 5 }}>
-            <TextField
-              autoComplete='off'
-              onChange={handleInputChange}
-              value={watchlistName}
-              inputRef={inputRef}
-              sx={{
-                borderColor: 'white',
-                '&:hover fieldset': {
-                  borderColor: 'green', // Change the border color on hover as needed
-                },
-              }}
-              variant='outlined'
-              label='Add WatchList Name'
-              InputLabelProps={{
-                style: {
-                  color: 'white',
-                },
-              }}
-            />
-          </Stack>
         </Box>
       </Modal>
     </Box>

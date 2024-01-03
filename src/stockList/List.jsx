@@ -17,20 +17,30 @@ const useStyles = makeStyles({
     boxShadow: 'none',
   },
 })
-
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein }
+const getRowStyle = (row) => {
+  // Assuming row.priceChange is a property indicating the change in price
+  return {
+    color: row.price > 0 ? 'green' : row.price < 0 ? 'red' : 'white',
+    
+  }
 }
 
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-]
+const StockList = ({ socketData }) => {
+  // Function to convert WebSocket data to the format expected by the Material-UI table
+  const createData = (symbol, price, timestamp, exchange, currency_quote) => ({
+    symbol,
+    price,
+    timestamp,
+    exchange,
+    currency_quote,
+  })
 
-const StockList = () => {
+  const rows = socketData.map(
+    ({ symbol, price, timestamp, exchange, currency_quote }) =>
+      createData(symbol, price, timestamp, exchange, currency_quote)
+  )
+  rows.shift()
+
   const classes = useStyles()
   return (
     <Box sx={{ marginTop: '10px' }}>
@@ -49,23 +59,23 @@ const StockList = () => {
             <TableRow>
               <TableCell sx={{ color: 'white' }}>Symbol</TableCell>
               <TableCell sx={{ color: 'white' }} align='right'>
-                Name
-              </TableCell>
-              <TableCell sx={{ color: 'white' }} align='right'>
                 Price
               </TableCell>
               <TableCell sx={{ color: 'white' }} align='right'>
-                Market Cap
+                Timestamp
               </TableCell>
               <TableCell sx={{ color: 'white' }} align='right'>
-                Change
+                Exchange
+              </TableCell>
+              <TableCell sx={{ color: 'white' }} align='right'>
+                Currency
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
+            {rows.map((row, index) => (
               <TableRow
-                key={row.name}
+                key={index}
                 sx={{
                   '&:last-child td, &:last-child th': {
                     borderBottom: 0,
@@ -73,19 +83,23 @@ const StockList = () => {
                 }}
               >
                 <TableCell sx={{ color: '#007FFF' }} component='th' scope='row'>
-                  {row.name}
+                  {row.symbol}
+                </TableCell>
+                <TableCell
+                  sx={{ color: 'white' }}
+                  align='right'
+                  style={getRowStyle(row)}
+                >
+                  {row.price}
                 </TableCell>
                 <TableCell sx={{ color: 'white' }} align='right'>
-                  {row.calories}
+                  {new Date(row.timestamp * 1000).toLocaleString()}
                 </TableCell>
                 <TableCell sx={{ color: 'white' }} align='right'>
-                  {row.fat}
+                  {row.exchange}
                 </TableCell>
                 <TableCell sx={{ color: 'white' }} align='right'>
-                  {row.carbs}
-                </TableCell>
-                <TableCell sx={{ color: 'white' }} align='right'>
-                  {row.protein}
+                  {row.currency_quote}
                 </TableCell>
               </TableRow>
             ))}
