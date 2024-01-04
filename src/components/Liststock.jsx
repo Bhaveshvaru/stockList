@@ -6,8 +6,11 @@ import AddIcon from '@mui/icons-material/Add'
 import Modal from '@mui/material/Modal'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
+import { useTheme } from '@mui/styles'
+import './btn.css'
 
 const Liststock = ({ open, setOpen, handleOpen, handleClose }) => {
+  const theme = useTheme()
   const [watchState, setWatchState] = useState([
     { name: 'WinnerList', id: 2, selected: false },
     { name: 'Tech List', id: 3, selected: true },
@@ -61,7 +64,12 @@ const Liststock = ({ open, setOpen, handleOpen, handleClose }) => {
 
   return (
     <Box>
-      <Typography variant='h5' gutterBottom color={'white'}>
+      <Typography
+        variant='h5'
+        gutterBottom
+        color={'white'}
+        style={{ color: `${theme.palette.typography.main}` }}
+      >
         WatchLists
       </Typography>
       <Box>
@@ -77,17 +85,22 @@ const Liststock = ({ open, setOpen, handleOpen, handleClose }) => {
               return (
                 <Button
                   key={item.id}
-                  sx={{
+                  style={{
                     marginLeft: '0.6rem',
                     textTransform: 'lowercase',
-                    backgroundColor: '#393A3E',
+                    backgroundColor:
+                      theme.palette.mode === 'light' ? '#E5E5E5' : '#393A3E',
                     borderRadius: '50px',
                     height: '2.5rem',
-                    borderColor: item.selected ? '#E6E6E7' : '#222429',
-                    color: '#E6E6E7',
+                    borderColor: item.selected
+                      ? `${theme.palette.btnBorder.secondary}`
+                      : `${theme.palette.btnBorder.main}`,
+
+                    color:
+                      theme.palette.mode === 'dark' ? '#E6E6E7' : '#393A3E',
                     '&:hover': {
                       backgroundColor: '#14141A',
-                      borderColor: '#222429',
+                      borderColor: item.selected ? '#E6E6E7' : '#222429',
                     },
                   }}
                   variant='outlined'
@@ -104,19 +117,30 @@ const Liststock = ({ open, setOpen, handleOpen, handleClose }) => {
             marginTop: 3,
             marginRight: 5,
             textTransform: 'lowercase',
-            backgroundColor: '#393A3E',
+            backgroundColor:
+              theme.palette.mode === 'light'
+                ? 'rgba(148, 187, 233, 1)'
+                : '#393A3E',
             borderRadius: '50px',
             height: '2.5rem',
-            borderColor: '#222429',
-            color: '#E6E6E7',
+            borderColor: theme.palette.mode === 'dark' ? '#222429' : '',
+            color: theme.palette.mode === 'dark' ? '#E6E6E7' : '#393A3E',
             marginLeft: '10px',
             '&:hover': {
-              backgroundColor: '#14141A',
-              borderColor: '#222429',
+              backgroundColor:
+                theme.palette.mode === 'dark'
+                  ? '#14141A'
+                  : 'rgba(148, 187, 233, 1)',
             },
           }}
           variant='outlined'
-          startIcon={<AddIcon />}
+          startIcon={
+            <AddIcon
+              className={`${
+                theme.palette.mode === 'dark' ? 'btnWhite' : 'btnBlack'
+              } `}
+            />
+          }
           onClick={handleOpen}
         >
           Create new watchlist

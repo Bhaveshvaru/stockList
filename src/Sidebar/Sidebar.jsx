@@ -5,8 +5,17 @@ import SearchIcon from '@mui/icons-material/Search'
 import AddIcon from '@mui/icons-material/Add'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
 import Brightness5Icon from '@mui/icons-material/Brightness5'
-
-const Sidebar = ({ handleOpen, handleOpenSymbol }) => {
+import { useTheme } from '@mui/styles'
+const Sidebar = ({
+  handleOpen,
+  handleOpenSymbol,
+  toggleDark,
+  settoggleDark,
+}) => {
+  const themeHandler = () => {
+    settoggleDark(!toggleDark)
+  }
+  const theme = useTheme()
   return (
     <Box
       sx={{
@@ -21,14 +30,29 @@ const Sidebar = ({ handleOpen, handleOpenSymbol }) => {
         onClick={() => handleOpenSymbol()}
         className='flex-item'
         fontSize='large'
+        style={{ color: theme.palette.mode === 'dark' ? 'white' : 'black' }}
       />
       <AddIcon
         onClick={() => handleOpen()}
         className='flex-item'
         fontSize='large'
+        style={{ color: theme.palette.mode === 'dark' ? 'white' : 'black' }}
       />
-      <DarkModeIcon className='flex-item' fontSize='large' />
-      <Brightness5Icon className='flex-item' fontSize='large' />
+      {toggleDark ? (
+        <Brightness5Icon
+          onClick={themeHandler}
+          className='flex-item'
+          fontSize='large'
+          style={{ color: theme.palette.mode === 'dark' ? 'white' : 'black' }}
+        />
+      ) : (
+        <DarkModeIcon
+          onClick={themeHandler}
+          className='flex-item'
+          fontSize='large'
+          style={{ color: theme.palette.mode === 'dark' ? 'white' : 'black' }}
+        />
+      )}
     </Box>
   )
 }

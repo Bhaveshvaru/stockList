@@ -8,6 +8,8 @@ import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import axios from 'axios'
 import StockList from '../stockList/List'
+import { useTheme } from '@mui/styles'
+import './btn.css'
 
 const Mylist = ({
   openSymbol,
@@ -15,6 +17,8 @@ const Mylist = ({
   handleOpenSymbol,
   handleCloseSymbol,
 }) => {
+  const theme = useTheme()
+
   const [symbolData, setSymbolData] = useState([])
   const [symbol, setSymbol] = useState(',')
   const [socketData, setSocketData] = useState([])
@@ -142,7 +146,11 @@ const Mylist = ({
         }}
       >
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          <Typography variant='h5' gutterBottom color={'white'}>
+          <Typography
+            variant='h5'
+            gutterBottom
+            style={{ color: `${theme.palette.typography.main}` }}
+          >
             My WatchList
           </Typography>
           {/* <Typography variant='subtitle2' gutterBottom color={'#5E5F63'}>
@@ -154,19 +162,33 @@ const Mylist = ({
         </Box>
         <Button
           sx={{
+            marginTop: 3,
+            marginRight: 5,
             textTransform: 'lowercase',
-            backgroundColor: '#393A3E',
-            borderRadius: '5px',
+            backgroundColor:
+              theme.palette.mode === 'light'
+                ? 'rgba(148, 187, 233, 1)'
+                : '#393A3E',
+            borderRadius: '50px',
             height: '2.5rem',
-            borderColor: '#222429',
-            color: '#E6E6E7',
+            borderColor: theme.palette.mode === 'dark' ? '#222429' : '',
+            color: theme.palette.mode === 'dark' ? '#E6E6E7' : '#393A3E',
+            marginLeft: '10px',
             '&:hover': {
-              backgroundColor: '#14141A',
-              borderColor: '#222429',
+              backgroundColor:
+                theme.palette.mode === 'dark'
+                  ? '#14141A'
+                  : 'rgba(148, 187, 233, 1)',
             },
           }}
           variant='outlined'
-          startIcon={<AddIcon />}
+          startIcon={
+            <AddIcon
+              className={`${
+                theme.palette.mode === 'dark' ? 'btnWhite' : 'btnBlack'
+              } `}
+            />
+          }
           onClick={handleOpenSymbol}
         >
           add symbols

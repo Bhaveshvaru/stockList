@@ -19,3 +19,9 @@ fieldset {
 .css-i4bv87-MuiSvgIcon-root {
   color: white !important;
 }
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}

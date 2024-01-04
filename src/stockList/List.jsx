@@ -21,7 +21,6 @@ const getRowStyle = (row) => {
   // Assuming row.priceChange is a property indicating the change in price
   return {
     color: row.price > 0 ? 'green' : row.price < 0 ? 'red' : 'white',
-    
   }
 }
 
@@ -49,7 +48,7 @@ const StockList = ({ socketData }) => {
           sx={{
             height: '23rem',
             zIndex: '1000',
-            backgroundColor: '#222429',
+            backgroundColor: 'rgba(148, 187, 233, 1)',
             minWidth: 650,
           }}
           size='small'
