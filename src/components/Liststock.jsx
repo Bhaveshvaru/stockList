@@ -25,7 +25,7 @@ const Liststock = ({ open, setOpen, handleOpen, handleClose }) => {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 600,
-    bgcolor: '#222429',
+    bgcolor: theme.palette.mode === 'light' ? '#ffffff' : '#222429',
     boxShadow: 24,
     p: 4,
     borderRadius: '10px',
@@ -118,9 +118,7 @@ const Liststock = ({ open, setOpen, handleOpen, handleClose }) => {
             marginRight: 5,
             textTransform: 'lowercase',
             backgroundColor:
-              theme.palette.mode === 'light'
-                ? 'rgba(148, 187, 233, 1)'
-                : '#393A3E',
+              theme.palette.mode === 'light' ? '#E5E5E5' : '#393A3E',
             borderRadius: '50px',
             height: '2.5rem',
             borderColor: theme.palette.mode === 'dark' ? '#222429' : '',
@@ -128,9 +126,7 @@ const Liststock = ({ open, setOpen, handleOpen, handleClose }) => {
             marginLeft: '10px',
             '&:hover': {
               backgroundColor:
-                theme.palette.mode === 'dark'
-                  ? '#14141A'
-                  : 'rgba(148, 187, 233, 1)',
+                theme.palette.mode === 'dark' ? '#14141A' : '#E5E5E5',
             },
           }}
           variant='outlined'
@@ -165,7 +161,7 @@ const Liststock = ({ open, setOpen, handleOpen, handleClose }) => {
               id='modal-modal-title'
               variant='h6'
               component='h2'
-              color={'white'}
+              color={theme.palette.mode === 'light' ? '#14141A' : '#E5E5E5'}
             >
               Create WatchList
             </Typography>
@@ -185,16 +181,18 @@ const Liststock = ({ open, setOpen, handleOpen, handleClose }) => {
                 value={watchlistName}
                 inputRef={inputRef}
                 sx={{
-                  borderColor: 'white',
+                  backgroundColor:
+                    theme.palette.mode === 'light' ? '#E6E6E7' : '#393A3E',
                   '&:hover fieldset': {
-                    borderColor: 'green', // Change the border color on hover as needed
+                    borderColor: 'red',
                   },
                 }}
                 variant='outlined'
                 label='Add WatchList Name'
                 InputLabelProps={{
                   style: {
-                    color: 'white',
+                    color:
+                      theme.palette.mode === 'dark' ? '#E6E6E7' : '#393A3E',
                   },
                 }}
               />
@@ -202,21 +200,29 @@ const Liststock = ({ open, setOpen, handleOpen, handleClose }) => {
             <Button
               sx={{
                 textTransform: 'lowercase',
-                backgroundColor: '#393A3E',
+                backgroundColor:
+                  theme.palette.mode === 'light' ? '#E5E5E5' : '#393A3E',
                 borderRadius: '50px',
                 height: '3.5rem',
-                borderColor: '#222429',
-                color: '#E6E6E7',
+                borderColor: theme.palette.mode === 'dark' ? '#222429' : '',
+                color: theme.palette.mode === 'dark' ? '#E6E6E7' : '#393A3E',
                 marginLeft: '10px',
                 marginTop: '30px',
                 fontSize: '0.8rem',
                 '&:hover': {
-                  backgroundColor: '#14141A',
+                  backgroundColor:
+                    theme.palette.mode === 'dark' ? '#14141A' : '#E5E5E5',
                   borderColor: '#222429',
                 },
               }}
               variant='outlined'
-              startIcon={<AddIcon />}
+              startIcon={
+                <AddIcon
+                  className={`${
+                    theme.palette.mode === 'dark' ? 'btnWhite' : 'btnBlack'
+                  } `}
+                />
+              }
               onClick={handleListUpdate}
             >
               Create new watchlist

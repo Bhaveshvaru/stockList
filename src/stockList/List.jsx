@@ -8,6 +8,7 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import { makeStyles } from '@mui/styles'
+import { useTheme } from '@mui/material'
 
 const useStyles = makeStyles({
   table: {
@@ -17,14 +18,9 @@ const useStyles = makeStyles({
     boxShadow: 'none',
   },
 })
-const getRowStyle = (row) => {
-  // Assuming row.priceChange is a property indicating the change in price
-  return {
-    color: row.price > 0 ? 'green' : row.price < 0 ? 'red' : 'white',
-  }
-}
 
 const StockList = ({ socketData }) => {
+  //console.log(socketData[0].fails)
   // Function to convert WebSocket data to the format expected by the Material-UI table
   const createData = (symbol, price, timestamp, exchange, currency_quote) => ({
     symbol,
@@ -33,11 +29,34 @@ const StockList = ({ socketData }) => {
     exchange,
     currency_quote,
   })
-
-  const rows = socketData.map(
+  const theme = useTheme()
+  let rows = socketData.map(
     ({ symbol, price, timestamp, exchange, currency_quote }) =>
-      createData(symbol, price, timestamp, exchange, currency_quote)
+      createData(
+        symbol,
+        price,
+        timestamp,
+        exchange ? exchange : 'N/A',
+        currency_quote
+      )
   )
+
+  if (socketData[0]) {
+    rows = [
+      ...rows,
+      ...socketData[0].fails.map(
+        ({ symbol, price, timestamp, exchange, currency_quote }) =>
+          createData(
+            symbol ? symbol : 'N/A',
+            price ? price : 'N/A',
+            timestamp ? timestamp : 'N/A',
+            exchange ? exchange : 'N/A',
+            currency_quote ? currency_quote : 'N/A'
+          )
+      ),
+    ]
+  }
+
   rows.shift()
 
   const classes = useStyles()
@@ -48,7 +67,8 @@ const StockList = ({ socketData }) => {
           sx={{
             height: '23rem',
             zIndex: '1000',
-            backgroundColor: 'rgba(148, 187, 233, 1)',
+            backgroundColor:
+              theme.palette.mode === 'dark' ? '#14141A' : '#E5E5E5',
             minWidth: 650,
           }}
           size='small'
@@ -56,17 +76,43 @@ const StockList = ({ socketData }) => {
         >
           <TableHead>
             <TableRow>
-              <TableCell sx={{ color: 'white' }}>Symbol</TableCell>
-              <TableCell sx={{ color: 'white' }} align='right'>
+              <TableCell
+                sx={{
+                  color: theme.palette.mode === 'light' ? '#14141A' : '#E5E5E5',
+                }}
+              >
+                Symbol
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: theme.palette.mode === 'light' ? '#14141A' : '#E5E5E5',
+                }}
+                align='right'
+              >
                 Price
               </TableCell>
-              <TableCell sx={{ color: 'white' }} align='right'>
+              <TableCell
+                sx={{
+                  color: theme.palette.mode === 'light' ? '#14141A' : '#E5E5E5',
+                }}
+                align='right'
+              >
                 Timestamp
               </TableCell>
-              <TableCell sx={{ color: 'white' }} align='right'>
+              <TableCell
+                sx={{
+                  color: theme.palette.mode === 'light' ? '#14141A' : '#E5E5E5',
+                }}
+                align='right'
+              >
                 Exchange
               </TableCell>
-              <TableCell sx={{ color: 'white' }} align='right'>
+              <TableCell
+                sx={{
+                  color: theme.palette.mode === 'light' ? '#14141A' : '#E5E5E5',
+                }}
+                align='right'
+              >
                 Currency
               </TableCell>
             </TableRow>
@@ -81,23 +127,53 @@ const StockList = ({ socketData }) => {
                   },
                 }}
               >
-                <TableCell sx={{ color: '#007FFF' }} component='th' scope='row'>
+                <TableCell
+                  sx={{
+                    color:
+                      theme.palette.mode === 'light' ? '#14141A' : '#E5E5E5',
+                  }}
+                  component='th'
+                  scope='row'
+                >
                   {row.symbol}
                 </TableCell>
                 <TableCell
-                  sx={{ color: 'white' }}
+                  sx={{
+                    color:
+                      theme.palette.mode === 'light' ? '#14141A' : '#E5E5E5',
+                  }}
                   align='right'
-                  style={getRowStyle(row)}
                 >
                   {row.price}
                 </TableCell>
-                <TableCell sx={{ color: 'white' }} align='right'>
-                  {new Date(row.timestamp * 1000).toLocaleString()}
+                <TableCell
+                  sx={{
+                    color:
+                      theme.palette.mode === 'light' ? '#14141A' : '#E5E5E5',
+                  }}
+                  align='right'
+                >
+                  {new Date(row.timestamp * 1000).toLocaleString() ===
+                  'Invalid Date'
+                    ? 'N/A'
+                    : new Date(row.timestamp * 1000).toLocaleString()}
                 </TableCell>
-                <TableCell sx={{ color: 'white' }} align='right'>
+                <TableCell
+                  sx={{
+                    color:
+                      theme.palette.mode === 'light' ? '#14141A' : '#E5E5E5',
+                  }}
+                  align='right'
+                >
                   {row.exchange}
                 </TableCell>
-                <TableCell sx={{ color: 'white' }} align='right'>
+                <TableCell
+                  sx={{
+                    color:
+                      theme.palette.mode === 'light' ? '#14141A' : '#E5E5E5',
+                  }}
+                  align='right'
+                >
                   {row.currency_quote}
                 </TableCell>
               </TableRow>

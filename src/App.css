@@ -2,11 +2,8 @@ th,
 td {
   border-bottom: 1px solid #5e5f63 !important;
 }
-fieldset {
-  border-color: white !important;
-}
 
-.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
+/* .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
   color: white !important;
 }
 
@@ -18,7 +15,7 @@ fieldset {
 
 .css-i4bv87-MuiSvgIcon-root {
   color: white !important;
-}
+} */
 body,
 html {
   margin: 0;

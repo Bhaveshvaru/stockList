@@ -20,7 +20,7 @@ const Mylist = ({
   const theme = useTheme()
 
   const [symbolData, setSymbolData] = useState([])
-  const [symbol, setSymbol] = useState(',')
+  const [symbol, setSymbol] = useState(',EUR/USD,BTC/USD,')
   const [socketData, setSocketData] = useState([])
 
   const changeHandler = (e) => {
@@ -35,11 +35,10 @@ const Mylist = ({
               },
             }
           )
-          console.log(response.data)
           const updatedData = response.data.data.map((item) => {
             const updatedItem = {}
             updatedItem.label = `${item.symbol}  -  ${item.name}`
-            updatedItem.year = item.name
+            updatedItem.year = item.symbol
             return updatedItem
           })
           setSymbolData(updatedData)
@@ -53,7 +52,7 @@ const Mylist = ({
   }
 
   const symbolAddHandler = () => {
-    setSymbol((prevText) => prevText + `,${symbolData[0].label}`)
+    setSymbol((prevText) => prevText + `,${symbolData[0].year}`)
 
     handleCloseSymbol()
   }
@@ -130,7 +129,7 @@ const Mylist = ({
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 580,
-    bgcolor: '#222429',
+    bgcolor: theme.palette.mode === 'light' ? '#ffffff' : '#222429',
     boxShadow: 24,
     p: 4,
     borderRadius: '10px',
@@ -166,9 +165,7 @@ const Mylist = ({
             marginRight: 5,
             textTransform: 'lowercase',
             backgroundColor:
-              theme.palette.mode === 'light'
-                ? 'rgba(148, 187, 233, 1)'
-                : '#393A3E',
+              theme.palette.mode === 'light' ? '#E5E5E5' : '#393A3E',
             borderRadius: '50px',
             height: '2.5rem',
             borderColor: theme.palette.mode === 'dark' ? '#222429' : '',
@@ -176,9 +173,7 @@ const Mylist = ({
             marginLeft: '10px',
             '&:hover': {
               backgroundColor:
-                theme.palette.mode === 'dark'
-                  ? '#14141A'
-                  : 'rgba(148, 187, 233, 1)',
+                theme.palette.mode === 'dark' ? '#14141A' : '#E5E5E5',
             },
           }}
           variant='outlined'
@@ -211,7 +206,7 @@ const Mylist = ({
                 id='modal-modal-title'
                 variant='h6'
                 component='h2'
-                color={'white'}
+                style={{ color: `${theme.palette.typography.main}` }}
               >
                 Search Symbols
               </Typography>
@@ -229,7 +224,11 @@ const Mylist = ({
                   disablePortal
                   id='combo-box-demo'
                   options={symbolData}
-                  sx={{ width: 300 }}
+                  sx={{
+                    width: 300,
+                    backgroundColor:
+                      theme.palette.mode === 'light' ? '#E6E6E7' : '#393A3E',
+                  }}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -237,7 +236,10 @@ const Mylist = ({
                       onChange={changeHandler}
                       InputLabelProps={{
                         style: {
-                          color: 'white',
+                          color:
+                            theme.palette.mode === 'dark'
+                              ? '#E6E6E7'
+                              : '#393A3E',
                         },
                       }}
                     />
@@ -247,16 +249,19 @@ const Mylist = ({
               <Button
                 sx={{
                   textTransform: 'lowercase',
-                  backgroundColor: '#393A3E',
+
                   borderRadius: '50px',
                   height: '3.5rem',
-                  borderColor: '#222429',
-                  color: '#E6E6E7',
+                  backgroundColor:
+                    theme.palette.mode === 'light' ? '#E5E5E5' : '#393A3E',
+                  borderColor: theme.palette.mode === 'dark' ? '#222429' : '',
+                  color: theme.palette.mode === 'dark' ? '#E6E6E7' : '#393A3E',
                   marginLeft: '10px',
                   marginTop: '30px',
                   fontSize: '0.8rem',
                   '&:hover': {
-                    backgroundColor: '#14141A',
+                    backgroundColor:
+                      theme.palette.mode === 'dark' ? '#14141A' : '#E5E5E5',
                     borderColor: '#222429',
                   },
                 }}
