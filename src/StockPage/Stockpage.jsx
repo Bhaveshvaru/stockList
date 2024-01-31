@@ -3,7 +3,7 @@ import Container from '@mui/material/Container'
 import Box from '@mui/material/Box'
 import './stock.css'
 import Sidebar from '../Sidebar/Sidebar'
-import Mylist from '../components/Mylist'
+
 import { Divider } from '@mui/material'
 import Liststock from '../components/Liststock'
 import { useTheme } from '@mui/styles'
@@ -29,7 +29,6 @@ const Stockpage = ({ toggleDark, settoggleDark }) => {
         sx={{
           height: '95vh',
           width: '90%',
-          marginLeft: '4rem',
           paddingTop: '1rem',
         }}
       >
@@ -64,9 +63,6 @@ const Stockpage = ({ toggleDark, settoggleDark }) => {
                 setOpen={setOpen}
                 handleOpen={handleOpen}
                 handleClose={handleClose}
-              />
-              <Divider style={{ background: '#5E5F63', margin: '10px 0' }} />
-              <Mylist
                 openSymbol={openSymbol}
                 setOpenSymbol={setOpenSymbol}
                 handleOpenSymbol={handleOpenSymbol}

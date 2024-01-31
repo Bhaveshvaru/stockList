@@ -4,7 +4,8 @@ import './sidebar.css'
 import SearchIcon from '@mui/icons-material/Search'
 import AddIcon from '@mui/icons-material/Add'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
-import Brightness5Icon from '@mui/icons-material/Brightness5'
+import WbSunnyIcon from '@mui/icons-material/WbSunny'
+
 import { useTheme } from '@mui/styles'
 const Sidebar = ({
   handleOpen,
@@ -39,7 +40,7 @@ const Sidebar = ({
         style={{ color: theme.palette.mode === 'dark' ? 'white' : 'black' }}
       />
       {toggleDark ? (
-        <Brightness5Icon
+        <WbSunnyIcon
           onClick={themeHandler}
           className='flex-item'
           fontSize='large'

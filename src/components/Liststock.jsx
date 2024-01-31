@@ -7,14 +7,24 @@ import Modal from '@mui/material/Modal'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import { useTheme } from '@mui/styles'
+import Mylist from '../components/Mylist'
 import './btn.css'
 
-const Liststock = ({ open, setOpen, handleOpen, handleClose }) => {
+const Liststock = ({
+  open,
+  setOpen,
+  handleOpen,
+  handleClose,
+  openSymbol,
+  setOpenSymbol,
+  handleOpenSymbol,
+  handleCloseSymbol,
+}) => {
   const theme = useTheme()
   const [watchState, setWatchState] = useState([
-    { name: 'WinnerList', id: 2, selected: false },
-    { name: 'Tech List', id: 3, selected: true },
-    { name: 'Penny stocks', id: 4, selected: false },
+    { name: 'WinnerList', id: 2, selected: false, symbol: ',' },
+    { name: 'Tech List', id: 3, selected: true, symbol: ',' },
+    { name: 'Penny stocks', id: 4, selected: false, symbol: ',' },
   ])
 
   const [watchlistName, setWatchlistName] = useState('')
@@ -230,6 +240,14 @@ const Liststock = ({ open, setOpen, handleOpen, handleClose }) => {
           </Box>
         </Box>
       </Modal>
+      <Mylist
+        openSymbol={openSymbol}
+        setOpenSymbol={setOpenSymbol}
+        handleOpenSymbol={handleOpenSymbol}
+        handleCloseSymbol={handleCloseSymbol}
+        watchState={watchState}
+         setWatchState
+      />
     </Box>
   )
 }

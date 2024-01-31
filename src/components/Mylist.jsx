@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import { Autocomplete, Button } from '@mui/material'
+import { Autocomplete, Button, CircularProgress } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import Modal from '@mui/material/Modal'
 import Stack from '@mui/material/Stack'
@@ -22,6 +22,7 @@ const Mylist = ({
   const [symbolData, setSymbolData] = useState([])
   const [symbol, setSymbol] = useState(',EUR/USD,BTC/USD,')
   const [socketData, setSocketData] = useState([])
+  const [loader, setLoader] = useState(false)
 
   const changeHandler = (e) => {
     const fetchData = async () => {
@@ -53,8 +54,8 @@ const Mylist = ({
 
   const symbolAddHandler = () => {
     setSymbol((prevText) => prevText + `,${symbolData[0].year}`)
-
     handleCloseSymbol()
+    setLoader(true)
   }
   useEffect(() => {
     // Define the WebSocket endpoint
@@ -70,13 +71,10 @@ const Mylist = ({
         symbols: symbol.substring(1),
       },
     })
-    console.log('subscribeMessage', subscribeMessage)
 
     // Handle the WebSocket connection opening
     socket.onopen = () => {
       console.log('WebSocket connection opened')
-
-      // Send the subscribe message when the connection is open
       socket.send(subscribeMessage)
     }
 
@@ -86,25 +84,22 @@ const Mylist = ({
       console.log('Received data:', receivedData)
       const newData = JSON.parse(event.data)
 
-      // Check if the new data is different from the existing data
       setSocketData((prevData) => {
         const index = prevData.findIndex(
           (item) => item.symbol === newData.symbol
         )
 
         if (index !== -1) {
-          // If the symbol is already present, update the record
           const updatedData = [...prevData]
           updatedData[index] = newData
           return updatedData
         } else {
-          // If the symbol is not present, add the new record
           return [...prevData, newData]
         }
       })
+      setLoader(false)
     }
 
-    // Handle errors that occur.
     socket.onerror = (error) => {
       console.error('WebSocket Error:', error)
     }
@@ -112,8 +107,6 @@ const Mylist = ({
     // Handle the WebSocket connection closing
     socket.onclose = (event) => {
       console.log('WebSocket connection closed:', event)
-
-      // You may want to attempt to reconnect here if needed
     }
 
     // Clean up the WebSocket connection when the component is unmounted
@@ -137,6 +130,18 @@ const Mylist = ({
 
   return (
     <>
+      {loader ? (
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <CircularProgress
+            style={{
+              color: theme.palette.mode === 'light' ? '#14141A' : '#E5E5E5',
+            }}
+          />
+        </Box>
+      ) : (
+        ''
+      )}
+
       <Box
         sx={{
           display: 'flex',
@@ -153,7 +158,7 @@ const Mylist = ({
             My WatchList
           </Typography>
           {/* <Typography variant='subtitle2' gutterBottom color={'#5E5F63'}>
-            items 12
+           {row.length}
           </Typography>
           <Typography variant='subtitle2' gutterBottom color={'#5E5F63'}>
             updated on 22/12/2023

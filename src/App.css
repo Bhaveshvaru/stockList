@@ -22,3 +22,10 @@ html {
   padding: 0;
   height: 100%;
 }
+th {
+  height: 50px !important;
+}
+
+.css-1dsahoe-MuiTable-root {
+  height: 18rem !important;
+}

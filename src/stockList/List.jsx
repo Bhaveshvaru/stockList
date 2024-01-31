@@ -17,10 +17,12 @@ const useStyles = makeStyles({
   tableContainer: {
     boxShadow: 'none',
   },
+  noBottomBorder: {
+    borderBottom: 'none',
+  },
 })
 
 const StockList = ({ socketData }) => {
-  //console.log(socketData[0].fails)
   // Function to convert WebSocket data to the format expected by the Material-UI table
   const createData = (symbol, price, timestamp, exchange, currency_quote) => ({
     symbol,
@@ -33,11 +35,11 @@ const StockList = ({ socketData }) => {
   let rows = socketData.map(
     ({ symbol, price, timestamp, exchange, currency_quote }) =>
       createData(
-        symbol,
-        price,
-        timestamp,
+        symbol ? symbol : 'N/A',
+        price ? price : 'N/A',
+        timestamp ? timestamp : 'N/A',
         exchange ? exchange : 'N/A',
-        currency_quote
+        currency_quote ? currency_quote : 'N/A'
       )
   )
 
@@ -58,6 +60,7 @@ const StockList = ({ socketData }) => {
   }
 
   rows.shift()
+  rows.pop()
 
   const classes = useStyles()
   return (
