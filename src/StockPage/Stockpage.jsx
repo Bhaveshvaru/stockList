@@ -3,8 +3,6 @@ import Container from '@mui/material/Container'
 import Box from '@mui/material/Box'
 import './stock.css'
 import Sidebar from '../Sidebar/Sidebar'
-
-import { Divider } from '@mui/material'
 import Liststock from '../components/Liststock'
 import { useTheme } from '@mui/styles'
 
