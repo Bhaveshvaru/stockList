@@ -7,16 +7,6 @@ import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
-import { makeStyles } from '@mui/styles'
-
-const useStyles = makeStyles({
-  table: {
-    minWidth: 650,
-  },
-  tableContainer: {
-    boxShadow: 'none',
-  },
-})
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein }
@@ -31,10 +21,9 @@ const rows = [
 ]
 
 const StockList = () => {
-  const classes = useStyles()
   return (
     <Box sx={{ marginTop: '10px' }}>
-      <TableContainer className={classes.tableContainer} component={Paper}>
+      <TableContainer component={Paper}>
         <Table
           sx={{
             height: '23rem',
